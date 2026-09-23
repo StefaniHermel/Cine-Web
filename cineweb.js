@@ -10,7 +10,7 @@ formulario.addEventListener("submit", (evento) => {  ///Quando o usuário enviar
 
     );
                                                      
-const generos = Array.from(generosSelecionados).map( ///PAGANDO A LISTA DE GENEROS(NODELIST)//
+const generos = Array.from(generosSelecionados).map( ///PEGANDO A LISTA DE GENEROS(NODELIST)//
 (checkbox) => checkbox.value                          // DO HTML CONVERTENDO EM ARRAY PURO//
 
 );
@@ -19,7 +19,24 @@ const usuario = {
     idade : idade,
     generos: generos,
 };
-console.log(usuario)
+
+localStorage.setItem("usuario", JSON.stringify (usuario)); //O localStorage trabalha armazenando texto.//
+
+
+console.log("usuario", usuario);
+
+try{
+    const = resposta = await fetch(
+      "https://api.tvmaze.com/shows?page=1"
+ );
+
+ const catalogo = await resposta.JSON();
+
+ console.log ("catalogo", catalogo);
+
+} catch (erro) {
+    console.error("Erro ao buscar o catálogo:", erro);
+}
 
 });
 
