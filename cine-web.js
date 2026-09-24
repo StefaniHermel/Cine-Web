@@ -1,59 +1,34 @@
+// Pega o formulário que existe no index.html
 const formulario = document.querySelector("#form-perfil");
 
-formulario.addEventListener("submit", async (event) => {
-    event.preventDefault();
+// Quando o usuário enviar o formulário, esta função será executada
+formulario.addEventListener("submit", function (evento) {
+// Impede que a página seja recarregada automaticamente
+    evento.preventDefault();
 
+// Pega o valor digitado no campo nome
     const nome = document.querySelector("#nome").value;
+
+// Pega o valor digitado no campo idade
     const idade = Number(document.querySelector("#idade").value);
 
-    const generosSelecionados = document.querySelectorAll(
-        'input[name="genero"]:checked'
-    );
+// Pega todos os checkbox que possuem name="genero"
+     const checkboxes = document.querySelectorAll('input[name="genero"]:checked');
 
-    const generos = Array.from(generosSelecionados).map(
-        (checkbox) => checkbox.value
-    );
+// Transforma os checkbox selecionados em um array
 
+    const generosFavoritos = Array.from(checkboxes).map(function (checkbox) {
+        return checkbox.value;
+    });
+
+    // Cria o objeto com os dados do usuário
     const usuario = {
         nome: nome,
         idade: idade,
-        generos: generos
+        generos: generosFavoritos
     };
 
-    // Salva o usuário
-    localStorage.setItem("usuario", JSON.stringify(usuario));
-
-    console.log("Usuário:", usuario);
-
-    // Busca o catálogo
-    try {
-        const resposta = await fetch(
-            "https://api.tvmaze.com/shows?page=1"
-        );
-
-        const catalogo = await resposta.json();
-
-        console.log("Catálogo bruto:", catalogo);
-
-
-        const catalogoTratado = catalogo
-        .filter((serie) => serie.rating.average !== null)
-         .sort((a, b) => b.rating.average - a.rating.average)
-    .slice(0, 20)
-    .map((serie) => ({
-        id: serie.id,
-        titulo: serie.name,
-        imagem: serie.image?.medium || "",
-        nota: serie.rating.average || 0,
-        generos: serie.genres || [],
-        resumo: serie.summary || "Resumo não disponível."
-    }));
-
-console.log("Catálogo tratado:", catalogoTratado);
-         
-        
-
-    } catch (erro) {
-        console.error("Erro ao buscar o catálogo:", erro);
-    }
+    // Mostra o objeto no console para podermos testar
+    console.log(usuario);
 });
+    
