@@ -35,8 +35,21 @@ formulario.addEventListener("submit", async (event) => {
 
         console.log("Catálogo bruto:", catalogo);
 
+
         const catalogoTratado = catalogo
         .filter((serie) => serie.rating.average !== null)
+         .sort((a, b) => b.rating.average - a.rating.average)
+    .slice(0, 20)
+    .map((serie) => ({
+        id: serie.id,
+        titulo: serie.name,
+        imagem: serie.image?.medium || "",
+        nota: serie.rating.average || 0,
+        generos: serie.genres || [],
+        resumo: serie.summary || "Resumo não disponível."
+    }));
+
+console.log("Catálogo tratado:", catalogoTratado);
          
         
 
