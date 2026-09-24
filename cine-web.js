@@ -28,7 +28,12 @@ formulario.addEventListener("submit", function (evento) {
         generos: generosFavoritos
     };
 
-    // Mostra o objeto no console para podermos testar
+    // Encontra o espaço de mensagem que já existe no HTML
+const mensagem = document.querySelector("#mensagem-formulario");
+
+// Mostra na página os dados que foram preenchidos
+mensagem.textContent = `Olá, ${usuario.nome}! Seu perfil foi criado.`;
+// Mostra o objeto no console para podermos testar
     console.log(usuario);
 });
     
