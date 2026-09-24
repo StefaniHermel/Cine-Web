@@ -8,15 +8,15 @@
     <meta property="og:title" content="CineMatchWeb">
     <meta property="og:description" content="Encontre séries compatíveis com seus gêneros favoritos.">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="Cine-WEb.css">
+    <link rel="stylesheet" href="cine-web.css">
     
-    <title>CineWEb - Recomendações de Séries</title>
+    <title>CineWeb - Recomendações de Séries</title>
 </head>
 
-<dody>
+<body>
     <header>
-        <h1>CineWEb</h1>
-        <p><strong>CineWEb - Recomendações de Séries</strong> </p>
+        <h1>CineWeb</h1>
+        <p><strong>CineWeb - Recomendações de Séries</strong> </p>
     </header>
 
     <main>
@@ -26,39 +26,46 @@
             <form id="form-perfil">
 
                 <label for="nome">nome</label>
-                <input type+="text" id="nome" name="nome" required>
+                <input type="text" id="nome" name="nome" required>
 
 
                 <label for="idade">idade</label>
-                <input type+="number" id="idade" name="idade" required>
+                <input type="number" id="idade" name="idade" required>
 
-                <fieldset>
-                    <legend> <stron>gêneros favoritos</stron></legend>
+                
+    <fieldset>
+    <legend><strong>Gêneros favoritos</strong></legend>
 
-                    <label>
-                        <input type="checkbox" name="genero" value="Drama">
-                        Drama
-                        <label>
-                            <input type="checkbox" name="genero" value="comedia">
-                            comedia
-                            <label>
-                                <input type="checkbox" name="genero" value="Ação">
-                                Ação
-                                <label>
-                                    <input type="checkbox" name="genero" value="thiller">
-                                    thiller
-                                    <label>
-                                        <input type="checkbox" name="genero" value="Terror">
-                                        Terror
+    <label>
+        <input type="checkbox" name="genero" value="Drama">
+        Drama
+    </label>
 
+    <label>
+        <input type="checkbox" name="genero" value="Comédia">
+        Comédia
+    </label>
 
-                                    </label>
-                </fieldset>
-                <button type="submit">
-                    Ver recomendações
-                </button>
-            </form>
-            <p id="mensagem-formulario" aria-live="polite"></p>
+    <label>
+        <input type="checkbox" name="genero" value="Ação">
+        Ação
+    </label>
+
+    <label>
+        <input type="checkbox" name="genero" value="Thriller">
+        Thriller
+    </label>
+
+    <label>
+        <input type="checkbox" name="genero" value="Terror">
+        Terror
+    </label>
+</fieldset>
+                
+<button type="submit">Ver recomendações</button>
+
+</form>
+    <p id="mensagem-formulario" aria-live="polite"></p>
                                                                      <!--aria-live="polite": Esta é a parte mais importante para 
                                                                     a acessibilidade. O atributo aria-live avisa ao leitor de
                                                                      tela que esse parágrafo pode mudar de conteúdo dinamicamente.
@@ -75,14 +82,14 @@
         </section>
 
         <footer>
-            <p>&copy; 2026 CineMatch</p>
+            <p>&copy; 2026 CineWeb</p>
         </footer>
 
-        <script type="module" src="cine-Web.js"></script> <!--serve para indicar ao navegador que o arquivo script.
+        <script type="module" src="cine-web.js"></script> <!--serve para indicar ao navegador que o arquivo script.
                                                          js deve ser tratado como um EcmaScript Module (ESM).Isso 
                                                          muda o comportamento padrão do JavaScript clássico de várias 
                                                          formas importantes:1. Permite o uso de import e export--!
 
     </main>
 
-</dody>
+</body>
