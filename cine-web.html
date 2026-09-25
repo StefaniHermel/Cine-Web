@@ -22,6 +22,11 @@
     <main>
         <section id="perfil">
             <h2>Crie seu perfil</h2>
+            <!-- Área que mostra o perfil já salvo (fica escondida até ter um perfil no localStorage) -->
+<div id="perfil-salvo" hidden>
+    <p id="texto-perfil-salvo"></p>
+    <button id="btn-trocar-perfil" type="button">Trocar perfil</button>
+</div>
 
             <form id="form-perfil">
 
@@ -76,6 +81,7 @@
 
         <section id="resultados">
             <h2>Suas recomendações</h2>
+            <div id="lista-cards"></div>
 
             <!-- Os cards das séries serão inseridos aqui pelo JavaScript -->
 

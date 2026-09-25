@@ -1,5 +1,5 @@
 // Guia para o nome da classe CSS de cada faixa.
-// Uso isso porque classe CSS sem acento é mais segura ("Média" vira "media").
+
 const CLASSE_DA_FAIXA = {
     Alta: "alta",
     Média: "media",
@@ -41,16 +41,17 @@ export function renderizarCard(resultado) {
 // append coloca todos os elementos dentro do card, na ordem em que aparecem
     card.append(titulo, percentual, badge, emComum, naoExplorados);
 
-// Coloca o card pronto dentro da div que criamos no HTML
-    document.querySelector("#lista-cards").appendChild(card);
+// Coloca o card pronto dentro da div criado no HTML
+    document.querySelector("#resultados").appendChild(card);
+    
 }
-
+;
 
 // Desenha a lista inteira de resultados
 export function renderizarResultados(resultados) {
-    const lista = document.querySelector("#lista-cards");
-    // Limpa a lista antes de desenhar os novos resultados
+    const lista = document.querySelector("#resultados");
+// Limpa a lista antes de desenhar os novos resultados
     lista.innerHTML = "";
-    // Para cada resultado, chama renderizarCard()
+// Para cada resultado, chama renderizarCard()
     resultados.forEach(renderizarCard);
 }
