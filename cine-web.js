@@ -152,14 +152,13 @@ async function gerarRecomendacoes(usuario) {
 
 // Transforma cada série da API em um objeto da nossa classe Serie
     const series = catalogo.map(function (dadosSerie) {
-
-        return new Serie({
-            titulo: dadosSerie.name,
-            generos: dadosSerie.genres,
-            duracaoMinutos: dadosSerie.runtime
-        });
-
+    return new Serie({
+        titulo: dadosSerie.name,
+        generos: dadosSerie.genres,
+        duracaoMinutos: dadosSerie.runtime,
+        imagem: dadosSerie.image?.medium || null   
     });
+});    
 
      // Mantém somente séries que possuem pelo menos um gênero
     // em comum com os gêneros favoritos do usuário

@@ -37,10 +37,12 @@ export class Conteudo {
             percentual: percentual,
             classificacao: classificacao,
             generosEmComum: generosEmComum,
-            generosNaoExplorados: generosNaoExplorados
+            generosNaoExplorados: generosNaoExplorados,
+            imagem: this.imagem || null   // ← ADICIONADO
         };
     }
 }
+
 // Classe "filha": herda de Conteudo e acrescenta o que é específico de série
 export class Serie extends Conteudo {
     constructor(dadosSerie) {
@@ -50,5 +52,6 @@ export class Serie extends Conteudo {
         // Atributos extras, específicos de Serie
         this.tipo = "Série";
         this.duracaoMinutos = dadosSerie.duracaoMinutos;
+        this.imagem = dadosSerie.imagem || null;   // ← CORRIGIDO (antes era só "imagem")
     }
 }
