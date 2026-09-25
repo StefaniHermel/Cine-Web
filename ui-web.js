@@ -49,7 +49,7 @@ export function renderizarCard(resultado) {
 
 // Desenha a lista inteira de resultados
 export function renderizarResultados(resultados) {
-    const lista = document.querySelector("#resultados");
+    const lista = document.querySelector("#lista-cards");
 // Limpa a lista antes de desenhar os novos resultados
     lista.innerHTML = "";
 // Para cada resultado, chama renderizarCard()

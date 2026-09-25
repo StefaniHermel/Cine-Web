@@ -147,7 +147,7 @@ return
 
 async function gerarRecomendacoes(usuario) {
 
-    // Busca as séries da API
+// Busca as séries da API
     const catalogo = await buscarCatalogo();
 
 // Transforma cada série da API em um objeto da nossa classe Serie
@@ -159,6 +159,14 @@ async function gerarRecomendacoes(usuario) {
             duracaoMinutos: dadosSerie.runtime
         });
 
+    });
+
+     // Mantém somente séries que possuem pelo menos um gênero
+    // em comum com os gêneros favoritos do usuário
+    const seriesCompatíveis = series.filter(function (serie) {
+        return serie.generos.some(function (genero) {
+            return usuario.generos.includes(genero);
+        });
     });
 
     // Calcula a compatibilidade de cada série com o usuário
@@ -175,8 +183,13 @@ async function gerarRecomendacoes(usuario) {
 
     });
 
+    // Mostra somente as 10 melhores recomendações
+    const melhoresResultados = resultados.slice(0, 10);
+    console.log("TOTAL:", resultados.length);
+    console.log("VOU MOSTRAR:", melhoresResultados.length);
+
      // Mostra os resultados na página
-    renderizarResultados(resultados);
+    renderizarResultados(melhoresResultados);
 }
 
 
