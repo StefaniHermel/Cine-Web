@@ -12,6 +12,22 @@ export function renderizarCard(resultado) {
 // Cria o <article>, a tag semântica pedida no RF01 (um por série).
     const card = document.createElement("article");
 
+    / 🆕 IMAGEM DA SÉRIE
+    // Se a série tiver imagem, cria um <img>; se não, cria um bloco cinza.
+    if (resultado.imagem) {
+        const img = document.createElement("img");
+        img.src = resultado.imagem;
+        img.alt = `Capa da série ${resultado.titulo}`;
+        img.loading = "lazy"; // carrega só quando aparece na tela (performance)
+        card.appendChild(img);
+    } else {
+        const semImagem = document.createElement("div");
+        semImagem.classList.add("sem-imagem");
+        semImagem.textContent = "Sem imagem";
+        card.appendChild(semImagem);
+    }
+
+
 // classList.add coloca a classe "card-serie" no elemento (é o que o CSS vai estilizar).
     card.classList.add("card-serie");
 
@@ -52,6 +68,6 @@ export function renderizarResultados(resultados) {
     const lista = document.querySelector("#lista-cards");
 // Limpa a lista antes de desenhar os novos resultados
     lista.innerHTML = "";
-// Para cada resultado, chama renderizarCard()
+// Para cada resultado, chama renderizarCard()git add ui-web.js
     resultados.forEach(renderizarCard);
 }
