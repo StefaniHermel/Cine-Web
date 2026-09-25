@@ -12,7 +12,7 @@ export function renderizarCard(resultado) {
 // Cria o <article>, a tag semântica pedida no RF01 (um por série).
     const card = document.createElement("article");
 
-    / 🆕 IMAGEM DA SÉRIE
+    // 🆕 IMAGEM DA SÉRIE
     // Se a série tiver imagem, cria um <img>; se não, cria um bloco cinza.
     if (resultado.imagem) {
         const img = document.createElement("img");

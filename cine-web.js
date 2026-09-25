@@ -72,11 +72,8 @@ formulario.addEventListener("submit", async function (evento) {
 
 // Transforma os checkbox selecionados em um array
 
-    const generosFavoritos = Array.from(checkboxes).map(async function (checkbox) {
+        const generosFavoritos = Array.from(checkboxes).map(function (checkbox) {
         return checkbox.value;
-        mostrarPerfilSalvo(usuario);
-// Gera as recomendações
-    await gerarRecomendacoes(usuario);
     });
 
     // Cria o objeto com os dados do usuário
