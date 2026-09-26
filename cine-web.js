@@ -1,5 +1,25 @@
 import { Serie } from './modelo.js';
-import { renderizarResultados } from './ui-web.js';
+import { renderizarResultados, renderizarPopulares } from './ui-web.js';
+// ===== RF11: Contador por closure =====
+// Cada vez que essa função é chamada, ela incrementa um contador
+// interno. O contador só pode ser acessado por dentro dessa função.
+function criarContador() {
+    let contador = 0;
+    return function () {
+        contador++;
+        return contador;
+    };
+}
+
+const contarRecalculo = criarContador();
+
+// ===== RF10: Função de callback =====
+function exibirMensagemDeBoasVindas(nome, callback) {
+    console.log(`👋 Bem-vindo(a), ${nome}!`);
+    if (typeof callback === "function") {
+        callback();
+    }
+}
 
 // Chave usada para salvar o perfil no localStorage
 const CHAVE_LOCALSTORAGE = "cineWebPerfil";
@@ -15,39 +35,37 @@ const botaoTrocarPerfil = document.querySelector("#btn-trocar-perfil");
 // Encontra o espaço de mensagem que já existe no HTML
 const mensagem = document.querySelector("#mensagem-formulario");
 
-// ===== RF03: salvar o perfil no localStorage =====
+
+// ============================================================
+// RF03: LOCALSTORAGE
+// ============================================================
+
 function salvarPerfil(usuario) {
-    // localStorage só guarda texto, então convertemos o objeto para JSON
     localStorage.setItem(CHAVE_LOCALSTORAGE, JSON.stringify(usuario));
 }
 
-// ===== RF03: carregar o perfil salvo, se existir =====
 function carregarPerfil() {
     const dadosSalvos = localStorage.getItem(CHAVE_LOCALSTORAGE);
-
-    // Se não tem nada salvo, retorna null
-    if (!dadosSalvos) {
-        return null;
-    }
-
-    // Converte o texto salvo de volta para objeto
+    if (!dadosSalvos) return null;
     return JSON.parse(dadosSalvos);
 }
 
-// Mostra a área de "perfil salvo" e esconde o formulário
 function mostrarPerfilSalvo(usuario) {
     textoPerfilSalvo.textContent = `Olá, ${usuario.nome}! Seu perfil já está salvo.`;
     perfilSalvoDiv.hidden = false;
     formulario.hidden = true;
 }
 
-// Mostra o formulário e esconde a área de "perfil salvo"
 function mostrarFormulario() {
     perfilSalvoDiv.hidden = true;
     formulario.hidden = false;
 }
 
-// ===== Quando a página carrega, verifica se já existe um perfil salvo =====
+
+// ============================================================
+// INICIALIZAÇÃO: verifica se já existe perfil salvo
+// ============================================================
+
 const perfilExistente = carregarPerfil();
 
 if (perfilExistente) {
@@ -56,136 +74,164 @@ if (perfilExistente) {
     mostrarFormulario();
 }
 
-// Quando o usuário enviar o formulário, esta função será executada
+
+// ============================================================
+// RF02: CAPTURA DO FORMULÁRIO
+// ============================================================
+
 formulario.addEventListener("submit", async function (evento) {
-// Impede que a página seja recarregada automaticamente
     evento.preventDefault();
 
-// Pega o valor digitado no campo nome
     const nome = document.querySelector("#nome").value;
-
-// Pega o valor digitado no campo idade
     const idade = Number(document.querySelector("#idade").value);
 
-// Pega todos os checkbox que possuem name="genero"
-     const checkboxes = document.querySelectorAll('input[name="genero"]:checked');
-
-// Transforma os checkbox selecionados em um array
-
-        const generosFavoritos = Array.from(checkboxes).map(function (checkbox) {
+    const checkboxes = document.querySelectorAll('input[name="genero"]:checked');
+    const generosFavoritos = Array.from(checkboxes).map(function (checkbox) {
         return checkbox.value;
     });
 
-    // Cria o objeto com os dados do usuário
     const usuario = {
         nome: nome,
         idade: idade,
         generos: generosFavoritos
     };
 
-    // RF03: salva o perfil no localStorage
     salvarPerfil(usuario);
+    const total = contarRecalculo();
+console.log(`🔁 Recalculou recomendações ${total} vez(es).`);
 
-// Mostra na página os dados que foram preenchidos
-mensagem.textContent = `Olá, ${usuario.nome}! Seu perfil foi criado.`;
-
-// Mostra o objeto no console para podermos testar
+    mensagem.textContent = `Olá, ${usuario.nome}! Seu perfil foi criado. (Recálculo nº ${total})`;
     console.log(usuario);
 
-    // Troca a visualização: esconde o formulário e mostra o perfil salvo
     mostrarPerfilSalvo(usuario);
     await gerarRecomendacoes(usuario);
 });
 
-// ===== Botão "Trocar perfil" =====
+
+// ============================================================
+// BOTÃO "Trocar perfil"
+// ============================================================
+
 botaoTrocarPerfil.addEventListener("click", function () {
-    // Remove o perfil salvo do localStorage
     localStorage.removeItem(CHAVE_LOCALSTORAGE);
-
-    // Limpa o formulário (nome, idade e checkboxes)
     formulario.reset();
-
-    // Mostra o formulário de novo
     mostrarFormulario();
 });
 
-  
+
+// ============================================================
+// RF04: BUSCAR CATÁLOGO NA API TVMAZE
+// ============================================================
+
 async function buscarCatalogo() {
-
     try {
+        const resposta = await fetch("https://api.tvmaze.com/shows?page=0");
 
-        // Faz a requisição para a API
-        const resposta = await fetch(
-    "https://api.tvmaze.com/shows?page=0"
-);
-
-        // Verifica se a resposta deu erro
         if (!resposta.ok) {
             throw new Error("Erro ao buscar o catálogo.");
         }
 
-        // Converte a resposta para JSON
         const catalogo = await resposta.json();
-
-        // Mostra o catálogo no console
-        console.log(catalogo);
-
         return catalogo;
 
     } catch (erro) {
-
-        // Mostra o erro no console
         console.error("Não foi possível carregar o catálogo:", erro);
-return
+        return null;
     }
 }
 
-// ===== Criar recomendações =====
+
+// ============================================================
+// RF07: GERAR RECOMENDAÇÕES PERSONALIZADAS
+// ============================================================
 
 async function gerarRecomendacoes(usuario) {
+    mensagem.innerHTML = `<span class="carregando"><span class="spinner"></span> Buscando as melhores séries pra você...</span>`;
 
-// Busca as séries da API
     const catalogo = await buscarCatalogo();
 
-// Transforma cada série da API em um objeto da nossa classe Serie
-    const series = catalogo.map(function (dadosSerie) {
-    return new Serie({
-        titulo: dadosSerie.name,
-        generos: dadosSerie.genres,
-        duracaoMinutos: dadosSerie.runtime,
-        imagem: dadosSerie.image?.medium || null   
-    });
-});    
+    if (!catalogo) {
+        mensagem.textContent = "Não foi possível carregar o catálogo. Tente novamente.";
+        return;
+    }
 
-     // Mantém somente séries que possuem pelo menos um gênero
-    // em comum com os gêneros favoritos do usuário
-    const seriesCompatíveis = series.filter(function (serie) {
-        return serie.generos.some(function (genero) {
-            return usuario.generos.includes(genero);
+    const series = catalogo.map(function (dadosSerie) {
+        return new Serie({
+            titulo: dadosSerie.name,
+            generos: dadosSerie.genres,
+            duracaoMinutos: dadosSerie.runtime,
+            imagem: dadosSerie.image?.medium || null
         });
     });
 
-    // Calcula a compatibilidade de cada série com o usuário
     const resultados = series.map(function (serie) {
-
         return serie.calcularCompatibilidade(usuario);
-
     });
 
-    // Ordena da maior compatibilidade para a menor
     resultados.sort(function (a, b) {
-
         return b.percentual - a.percentual;
-
     });
 
-    // Mostra somente as 10 melhores recomendações
     const melhoresResultados = resultados.slice(0, 10);
-    console.log("TOTAL:", resultados.length);
-    console.log("VOU MOSTRAR:", melhoresResultados.length);
 
-     // Mostra os resultados na página
     renderizarResultados(melhoresResultados);
+    mensagem.textContent = "";
 }
 
 
+// ============================================================
+// MAIS PROCURADAS (independente do perfil)
+// ============================================================
+
+async function carregarMaisProcuradas() {
+    const catalogo = await buscarCatalogo();
+    if (!catalogo) return;
+
+    const generosEmDestaque = ["Drama", "Comedy", "Action", "Horror"];
+
+    const populares = generosEmDestaque
+        .map(function (genero) {
+
+            const seriesDoGenero = catalogo.filter(function (serie) {
+                return (
+                    serie.genres.includes(genero) &&
+                    serie.rating &&
+                    serie.rating.average
+                );
+            });
+
+            seriesDoGenero.sort(function (a, b) {
+                return b.rating.average - a.rating.average;
+            });
+
+            const melhorDoGenero = seriesDoGenero[0];
+
+            if (!melhorDoGenero) return null;
+
+            return {
+                titulo: melhorDoGenero.name,
+                generos: melhorDoGenero.genres,
+                imagem: melhorDoGenero.image?.medium || null,
+                sinopse: melhorDoGenero.summary
+                    ? melhorDoGenero.summary.replace(/<[^>]*>/g, "")
+                    : "Sinopse não disponível.",
+                nota: melhorDoGenero.rating?.average || "Sem avaliação",
+                ano: melhorDoGenero.premiered
+                    ? melhorDoGenero.premiered.split("-")[0]
+                    : "Não informado"
+            };
+        })
+        .filter(Boolean);
+
+    renderizarPopulares(populares);
+    exibirMensagemDeBoasVindas("Visitante", function () {
+    console.log("✅ Cards de 'Mais procuradas' carregados!");
+});
+}
+
+
+// ============================================================
+// INICIALIZAÇÃO: carrega os cards "Mais procuradas"
+// ============================================================
+
+carregarMaisProcuradas();
