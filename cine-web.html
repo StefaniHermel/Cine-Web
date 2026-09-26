@@ -15,11 +15,20 @@
 
 <body>
     <header>
+    <div class="logo">
+        <span class="logo-icone">🎬</span>
         <h1>CineWeb</h1>
-        <p><strong>CineWeb - Recomendações de Séries</strong> </p>
-    </header>
+    </div>
+    <p><strong>Recomendações de séries sob medida pra você</strong></p>
+</header>
 
     <main>
+     <section id="populares">
+        <h2>🔥 Mais procuradas</h2>
+        <div id="lista-populares"></div>
+     </section>
+
+            
         <section id="perfil">
             <h2>Crie seu perfil</h2>
             <!-- Área que mostra o perfil já salvo (fica escondida até ter um perfil no localStorage) -->
@@ -41,30 +50,30 @@
     <fieldset>
     <legend><strong>Gêneros favoritos</strong></legend>
 
-    <label>
-        <input type="checkbox" name="genero" value="Drama">
-        Drama
-    </label>
+<label>
+    <input type="checkbox" name="genero" value="Drama">
+    🎭 Drama
+</label>
 
-    <label>
-        <input type="checkbox" name="genero" value="Comédia">
-        Comédia
-    </label>
+<label>
+    <input type="checkbox" name="genero" value="Comédia">
+    😂 Comédia
+</label>
 
-    <label>
-        <input type="checkbox" name="genero" value="Ação">
-        Ação
-    </label>
+<label>
+    <input type="checkbox" name="genero" value="Ação">
+    💥 Ação
+</label>
 
-    <label>
-        <input type="checkbox" name="genero" value="Thriller">
-        Thriller
-    </label>
+<label>
+    <input type="checkbox" name="genero" value="Thriller">
+    😨 Thriller
+</label>
 
-    <label>
-        <input type="checkbox" name="genero" value="Terror">
-        Terror
-    </label>
+<label>
+    <input type="checkbox" name="genero" value="Terror">
+    😱 Terror
+</label>
 </fieldset>
                 
 <button type="submit">Ver recomendações</button>
@@ -91,7 +100,28 @@
             <p>&copy; 2026 CineWeb</p>
         </footer>
 
+<!-- Modal com detalhes da série (fica escondido até um card ser clicado) -->
+<div id="modal-serie" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-conteudo">
+        <button id="modal-fechar" class="modal-fechar" type="button" aria-label="Fechar detalhes da série">✕</button>
+        <img id="modal-imagem" src="" alt="">
+        <div class="modal-corpo">
+            <h3 id="modal-titulo"></h3>
+            <p id="modal-avaliacao"></p>
+            <p id="modal-generos"></p>
+            <p id="modal-sinopse"></p>
+            
+            <!-- 👇 ADICIONE ESTA LINHA 👇 -->
+            <small id="modal-aviso" class="modal-aviso" hidden>
+                📌 Sinopse original fornecida pela TVMaze (em inglês)
+            </small>
+            <!-- 👆 FIM DO AVISO 👆 -->
+        </div>
+    </div>
+</div>
+    </main>
   <script type="module" src="cine-web.js"></script>
 
+  
 </body>
 </html>
