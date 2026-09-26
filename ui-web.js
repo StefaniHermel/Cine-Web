@@ -162,7 +162,7 @@ export function abrirDetalhes(serie) {
     modal.hidden = false;
 }, 100);
 
-
+}
 // Fecha o modal
 export function fecharDetalhes() {
     const modal = document.getElementById("modal-serie");
