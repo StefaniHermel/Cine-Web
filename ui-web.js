@@ -24,6 +24,8 @@ function resumirSinopse(texto, limite = 120) {
 
     return limpo.slice(0, limite).replace(/\s+\S*$/, "") + "...";
 }
+
+
 // ============================================================
 // CARDS DE RECOMENDAÇÃO PERSONALIZADA
 // ============================================================
@@ -46,7 +48,6 @@ export function renderizarCard(resultado) {
         semImagem.textContent = "Sem imagem";
         card.appendChild(semImagem);
     }
-
 
     // Título
     const titulo = document.createElement("h3");
@@ -78,7 +79,7 @@ export function renderizarCard(resultado) {
         resultado.generosNaoExplorados.join(", ") || "-"
     }`;
 
-    card.append(titulo, percentual, badge, emComum, naoExplorados);
+    card.append(titulo, percentual, badge, sinopse, emComum, naoExplorados);
 
     // Interação: clicar (ou Enter/Espaço) abre o modal de detalhes
     card.style.cursor = "pointer";
@@ -89,8 +90,6 @@ export function renderizarCard(resultado) {
     card.addEventListener("click", function () {
         abrirDetalhes(resultado);
     });
-
-    document.querySelector("#lista-cards").appendChild(card);
 
     card.addEventListener("keydown", function (evento) {
         if (evento.key === "Enter" || evento.key === " ") {
@@ -109,6 +108,21 @@ export function renderizarResultados(resultados) {
     if (!lista) return;
     lista.innerHTML = "";
     resultados.forEach(renderizarCard);
+}
+
+
+// Mostra uma mensagem de boas-vindas — pensada pra ser usada como callback
+export function exibirMensagemDeBoasVindas(nome) {
+    // Evita duplicar a mensagem se a pessoa recalcular várias vezes
+    const existente = document.getElementById("mensagem-boas-vindas");
+    if (existente) existente.remove();
+
+    const mensagem = document.createElement("p");
+    mensagem.id = "mensagem-boas-vindas";
+    mensagem.textContent = `Bem-vindo(a) de volta, ${nome}! Aqui estão suas recomendações.`;
+
+    const lista = document.querySelector("#lista-cards");
+    lista.parentElement.insertBefore(mensagem, lista);
 }
 
 
@@ -192,8 +206,9 @@ export function abrirDetalhes(serie) {
     }
 
     setTimeout(function () {
-    modal.hidden = false;
-}, 100);
+        modal.hidden = false;
+    }, 100);
+}
 
 
 // Fecha o modal
@@ -228,4 +243,3 @@ if (modalEl) {
         }
     });
 }
-
