@@ -14,7 +14,16 @@ const CLASSE_DA_FAIXA = {
     Baixa: "baixa",
 };
 
+// ===== Encurta a sinopse para caber no card =====
+function resumirSinopse(texto, limite = 120) {
+    if (!texto) return "Sinopse não disponível.";
 
+    const limpo = texto.replace(/<[^>]*>/g, "").trim();
+
+    if (limpo.length <= limite) return limpo;
+
+    return limpo.slice(0, limite).replace(/\s+\S*$/, "") + "...";
+}
 // ============================================================
 // CARDS DE RECOMENDAÇÃO PERSONALIZADA
 // ============================================================
@@ -22,6 +31,7 @@ const CLASSE_DA_FAIXA = {
 // Cria UM card de resultado (RF08)
 export function renderizarCard(resultado) {
     const card = document.createElement("article");
+    card.classList.add("card-serie");
 
     // Imagem da série (ou bloco "sem imagem")
     if (resultado.imagem) {
@@ -37,7 +47,6 @@ export function renderizarCard(resultado) {
         card.appendChild(semImagem);
     }
 
-    card.classList.add("card-serie");
 
     // Título
     const titulo = document.createElement("h3");
@@ -52,6 +61,11 @@ export function renderizarCard(resultado) {
     badge.classList.add("badge", CLASSE_DA_FAIXA[resultado.classificacao]);
     badge.textContent = `${resultado.classificacao} afinidade`;
 
+    // Resumo curto da sinopse
+    const sinopse = document.createElement("p");
+    sinopse.classList.add("card-sinopse");
+    sinopse.textContent = resumirSinopse(resultado.sinopse);
+
     // Gêneros em comum
     const emComum = document.createElement("p");
     emComum.textContent = `Gêneros em comum: ${
@@ -65,6 +79,25 @@ export function renderizarCard(resultado) {
     }`;
 
     card.append(titulo, percentual, badge, emComum, naoExplorados);
+
+    // Interação: clicar (ou Enter/Espaço) abre o modal de detalhes
+    card.style.cursor = "pointer";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `Ver detalhes de ${resultado.titulo}`);
+
+    card.addEventListener("click", function () {
+        abrirDetalhes(resultado);
+    });
+
+    document.querySelector("#lista-cards").appendChild(card);
+
+    card.addEventListener("keydown", function (evento) {
+        if (evento.key === "Enter" || evento.key === " ") {
+            evento.preventDefault();
+            abrirDetalhes(resultado);
+        }
+    });
 
     document.querySelector("#lista-cards").appendChild(card);
 }
