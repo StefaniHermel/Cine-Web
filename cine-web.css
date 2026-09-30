@@ -509,3 +509,13 @@ button:focus-visible {
   }
 }
 
+.card-sinopse {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 8px 0;
+    opacity: 0.85;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
