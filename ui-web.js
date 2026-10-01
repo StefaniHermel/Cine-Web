@@ -109,7 +109,20 @@ export function renderizarResultados(resultados) {
     lista.innerHTML = "";
     resultados.forEach(renderizarCard);
 }
+// RF11: mostra na tela quantas vezes as recomendações foram calculadas
+export function exibirContador(total) {
+    let el = document.getElementById("contador-recalculos");
 
+    if (!el) {
+        el = document.createElement("p");
+        el.id = "contador-recalculos";
+
+        const lista = document.querySelector("#lista-cards");
+        lista.parentElement.insertBefore(el, lista);
+    }
+
+    el.textContent = `Recomendações calculadas nesta sessão: ${total}`;
+}
 
 // Mostra uma mensagem de boas-vindas — pensada pra ser usada como callback
 export function exibirMensagemDeBoasVindas(nome) {

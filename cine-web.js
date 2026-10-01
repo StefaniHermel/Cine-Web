@@ -3,6 +3,7 @@ import { Serie } from './modelo.js';
 import {
     renderizarResultados,
     renderizarPopulares,
+    exibirContador,
     exibirMensagemDeBoasVindas as mostrarMensagemNaTela
 } from './ui-web.js';
 
@@ -202,6 +203,9 @@ async function gerarRecomendacoes(usuario) {
         // Mostra os resultados na tela
         renderizarResultados(melhoresResultados);
 
+        // RF11: closure conta e a tela mostra o número
+        exibirContador(contarRecalculo());
+        
         mensagem.textContent = "";
 
         // RF10: CALLBACK
@@ -281,18 +285,7 @@ formulario.addEventListener("submit", async function (evento) {
     // Salva o perfil
     salvarPerfil(usuario);
 
-    // RF11: atualiza o contador
-    const total = contarRecalculo();
-
-    console.log(
-        `🔁 Recalculou recomendações ${total} vez(es).`
-    );
-
-    // Mostra mensagem
-    mensagem.textContent =
-        `Olá, ${usuario.nome}! Seu perfil foi criado. ` +
-        `(Recálculo nº ${total})`;
-
+   
     console.log(usuario);
 
     // Mostra o perfil salvo

@@ -1,10 +1,10 @@
 {
-  "name": "Cine-Web",
+  "name": "cine-web",
   "version": "1.0.0",
-  "description": "Projeto Cine-Web",
+  "description": "CineWeb - Recomendações de séries sob medida pra você",
   "main": "script.js",
   "scripts": {
-    "start": "live-server cine-web.html"
+  "start": "live-server"
   },
   "keywords": [],
   "author": "",
