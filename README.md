@@ -29,13 +29,15 @@ O projeto resolve a limitação da versão anterior, permitindo que o recomendad
 
 ## 🚀 Como Executar
 
+**Pré-requisitos**: ter **Node.js** e **npm** instalados.
+
 Clone o repositório:
 
 
 git clone https://github.com/StefaniHermel/Cine-Web.git
 
 
-Entre na pasta: 
+Entre na pasta:
 cd Cine-Web
 
 Instale as dependências:
@@ -44,18 +46,23 @@ npm install
 Inicie o servidor:
 npm start
 
+O navegador abre automaticamente em `http://127.0.0.1:8080`.
 
-Também é possível executar pelo **Live Server do VS Code**, abrindo o arquivo `cine-web.html`.
+> ⚠️ O projeto usa **módulos ES** (`import/export`), então **não funciona abrindo o `index.html` direto pelo `file://`** — precisa ser servido por um servidor HTTP. O `live-server` já resolve isso.
+
+Também é possível executar pelo **Live Server do VS Code**, abrindo o arquivo `index.html`.
 
 ## 📁 Estrutura de Arquivos
 
-* `cine-web.html` — estrutura da página, formulário, resultados e modal;
+* `index.html` — estrutura da página, formulário, resultados e modal;
 * `cine-web.css` — estilos, Flexbox e responsividade;
 * `cine-web.js` — fluxo principal, formulário, API, recomendações e `localStorage`;
 * `ui-web.js` — renderização dos cards, mensagens e modal;
 * `modelo.js` — classes `Conteudo` e `Serie` e cálculo de compatibilidade;
 * `package.json` — configuração do projeto e dependência do `live-server`;
 * `README.md` — documentação do projeto.
+
+**Nota sobre nomenclatura**: o arquivo HTML principal se chama `index.html` (padrão sugerido). Os demais arquivos seguem nomes próprios do projeto (`cine-web.css`, `cine-web.js`, `ui-web.js`), mantendo a mesma responsabilidade descrita no Projeto.
 
 ## ⚙️ Funcionalidades e Atribuições
 
@@ -93,15 +100,36 @@ Responsável pelos requisitos relacionados à interface e apresentação:
 
 Na versão original do CineMatch JS foi utilizado **CommonJS**, com `require()` e `module.exports`.
 
+
+// CommonJS (usado no projeto anterior)
+const { Serie } = require('./modelo.js');
+module.exports = { Conteudo };
+
+
 No CineWeb foi adotado **ES Modules (ESM)**, utilizando `import` e `export`.
+
+
+// ESM (usado aqui)
+import { Serie } from './modelo.js';
+export class Conteudo { /* ... */ }
+
 
 O arquivo principal é carregado no HTML como módulo:
 
-html
 <script type="module" src="cine-web.js"></script>
 
 
 A separação dos módulos permite organizar as responsabilidades entre `cine-web.js`, `ui-web.js` e `modelo.js`.
+
+### Principais diferenças
+
+| Aspecto | CommonJS | ESM |
+|---|---|---|
+| Sintaxe | `require` / `module.exports` | `import` / `export` |
+| Ambiente típico | Node.js tradicional | Navegador moderno + Node.js |
+| Carregamento | Síncrono | Assíncrono |
+| Hoisting | Não | Sim (imports são içados) |
+| `this` no topo | `module.exports` | `undefined` |
 
 ## 📱 Responsividade
 
@@ -113,13 +141,14 @@ Os cards são reorganizados conforme o espaço disponível, permitindo a utiliza
 
 Foram utilizados:
 
-* HTML semântico;
+* HTML semântico (`header`, `main`, `section`, `article`, `footer`);
 * `lang="pt-BR"`;
 * `title` e `meta description`;
 * tags Open Graph;
 * `label` associado aos campos do formulário;
 * textos alternativos nas imagens;
 * `aria-label`;
+* `aria-live="polite"` na mensagem do formulário;
 * foco visível;
 * navegação por teclado em elementos interativos;
 * `role="dialog"` e `aria-modal` no modal;
@@ -138,11 +167,19 @@ O desenvolvimento também foi acompanhado por um **Kanban**, utilizando as etapa
 
 ## 🔮 Melhorias Futuras
 
-* filtro por gênero;
+* filtro por gênero sem refazer o formulário;
 * ordenação por compatibilidade, nome ou avaliação;
 * busca em múltiplas páginas da TVMaze API;
-* publicação do projeto na web;
+* publicação do projeto (GitHub Pages / Netlify / Vercel);
 * modo escuro com `toggle`.
+
+## 🎥 Vídeo de Demonstração
+
+📺 [Assista ao vídeo de apresentação](COLAR_LINK_AQUI)
+
+## 📋 Kanban
+
+🗂️ [Quadro do projeto no Trello](COLAR_LINK_AQUI)
 
 ## 👥 Autores
 
@@ -151,4 +188,4 @@ O desenvolvimento também foi acompanhado por um **Kanban**, utilizando as etapa
 
 ## 📄 Licença
 
-Projeto desenvolvido para fins avaliativos no curso de Desenvolvimento Mobile. Não possui fins comerciais.
+Projeto desenvolvido **originalmente** para fins avaliativos no curso de Desenvolvimento Mobile (Módulo 01). Todo o código foi escrito pela dupla, com apoio apenas de documentação oficial, material de aula e IA como ferramenta de estudo. Não possui fins comerciais.
