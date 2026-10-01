@@ -443,7 +443,7 @@ button:focus-visible {
   padding-top: 10px;
 }
 
-/* ===== GRADE DAS 10 RECOMENDAÇÕES: colunas iguais ===== */
+/* ÁREA DAS 10 RECOMENDAÇÕES: cards organizados com Flexbox */
 
 /*===Computador: vários cards lado a lado → Flexbox===*/
 
